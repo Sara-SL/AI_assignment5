@@ -1,9 +1,11 @@
+# AI
+# Assignment 5
+# By:Sara Styfberg Lundqvist and Leo Hoff von Sydow
+
 import gym
 import random
 import numpy as np
 import pandas as pd
-
-# from IPython.display import clear_output
 
 env = gym.make("Taxi-v3").env
 
@@ -17,14 +19,10 @@ alpha = 0.1  # Learning rate - the extent to which our Q-values are being update
 gamma = 0.6  # Discount factor - determines how much importance we want to give to future rewards
 epsilon = 0.1  # Probability of exploration
 
-# For plotting metrics
-all_epochs = []
-all_penalties = []
-
 for i in range(1, episode):
     # Initialize environment
     state = env.reset()
-    epochs, penalties, reward, = 0, 0, 0
+    reward = 0
     done = False
 
     while not done:
@@ -44,13 +42,8 @@ for i in range(1, episode):
         # Q-table update
         q_table[state, action] = new_value
 
-        # Detect wrong dropoffs
-        if reward == -10:
-            penalties += 1
-
         # State update
         state = next_state
-        epochs += 1
 
 print("Training finished.\n")
 
@@ -67,4 +60,3 @@ index = np.arange(1, 3001)
 value = q_table.ravel()
 df = pd.DataFrame({"Id": index, "Value": value})
 df.to_csv("submission.csv", index=False)
-
